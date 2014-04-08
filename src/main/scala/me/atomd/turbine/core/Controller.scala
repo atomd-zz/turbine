@@ -31,8 +31,8 @@ class Controller(config: Configuration) extends Actor with ActorLogging {
 
     case Connected(remoteAddress, localAddress) =>
       log.info("Connection is established from Addr(" + remoteAddress + ") to Addr(" + localAddress + ")")
-      val connection = sender()
-      val handler = context.actorOf(Props[Connection])
-      connection ! Register(handler)
+      val serverConnection = sender()
+      val connectionActor = context.actorOf(Props(classOf[Connection], serverConnection))
+      serverConnection ! Register(connectionActor)
   }
 }
